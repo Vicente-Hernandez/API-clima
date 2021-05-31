@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="https://cdn.pixabay.com/photo/2016/05/20/20/20/weather-1405870_960_720.png">
+    <title>API | Wheater</title>
+    <style>
+        #maint {
+            background-color: #6f42c1;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="https://cdn.pixabay.com/photo/2016/05/20/20/20/weather-1405870_960_720.png" alt="icono"
+                        width="40" height="40" class="d-inline-block align-text-center">
+                    API / Wheater
+                </a>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-10">
+                <div class="col-6 mt-3 offset-md-4 bg-info text-center border border-primary rounded-3">
+                    <h2 class="text-white">El tiempo</h2>
+                </div>
+                <div class="row p-1">
+                    <div id="maint" class="col-6 p-3 offset-md-4 border border-info rounded-3 text-white">
+                        <form action="/action_page.php" id="form">
+                            <div class="mb-3">
+                                <label for="ciudad" class="location">Ciudad:</label><br>
+                                <p></p>
+                                <input type="text" class="ciudad" id="ciudad"><br>
+                                <div class="form-text text-white">Ingrese ciudad.</div>
+                                <div class="mb-3">
+                                    <p></p>
+                                    <button type="submit" class="btn btn-warning">Submit</button>
+                        </form>
+
+
+                        <div>
+                            <p class="col-3 d-inline-block mt-2">Ciudad:
+                            <h2 class="d-inline-block">
+                                <span id="NY"></span>
+                                <span id="icon"></span>
+                            </h2>
+                        </div>
+                        <div>
+                            <p>Condición Actual: <span id="comoesta"></span></p>
+                            <p>Descripción: <span id="ahora"></span></p>
+                            <p>Temperatura:</p>
+                            <ul>
+                                <li>Actual:
+                                    <span id="actual"></span>
+                                </li>
+                                <li>Sensación térmica:
+                                    <span id="sensation"></span>
+                                </li>
+                                <li>Mínima:
+                                    <span id="min"></span>
+                                </li>
+                                <li>Máxima:
+                                    <span id="max"></span>
+                                </li>
+                            </ul>
+                            <p>Coordenadas:</p>
+                            <ul>
+                                <li>Longitud
+                                    <span id="lon"></span>
+                                </li>
+                                <li>Latitud
+                                    <span id="lat"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        $('#form').on('submit', function (ev) {
+            ev.preventDefault();
+            let city = $('#ciudad').val();
+            console.log(city);
+            let clima = {};
+            let api_key = b00000000000000000000000 // ingresar personal API key, consiguela en https://openweathermap.org/
+            // Adquisicipon de valor y asignación a variable clima
+            $.get('https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid='${api_key}'&units=metric&lang=sp', function (data) {
+                clima = data;
+                console.log(clima);
+                for (let i = 0; i < clima.weather.length; i++) {
+                    console.log(clima.weather[0]);
+                }
+                // Llamada a API y resultado
+                $('#NY').html(clima.name);
+                $('#comoesta').html(clima.weather[0].main);
+                $('#ahora').html(clima.weather[0].description);
+                let i = (clima.weather[0].icon)
+                console.log(i)
+                $('#actual').html(clima.main.temp);
+                $('#sensation').html(clima.main.feels_like);
+                $('#min').html(clima.main.temp_min);
+                $('#max').html(clima.main.temp_max);
+                $('#lon').html(clima.coord.lon);
+                $('#lat').html(clima.coord.lat);
+                $('#icon').html(`<img src="http://openweathermap.org/img/wn/${i}.png">`);
+            }, 'json');
+
+
+        });
+    });
+</script>
+
+</html>
